@@ -1,0 +1,48 @@
+---
+title: "Tarea 5 Andres Diaz 999013647"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+
+library(rpart)
+library(rpart.plot)
+
+vivienda <- read.csv('C:/Users/Andres/Desktop/Tarea5/VIVIENDA_BDP.csv', sep = ',')
+
+
+# Crear el árbol de decisión para la condición de la vivienda DEPARTAMENTO
+arbol_condicion <- rpart(DEPARTAMENTO ~
+                         PCV1 +
+                         PCV2 +
+                         PCV3 +
+                         PCV5 +
+                         PCV4,
+                         data = vivienda, method = "class")
+
+# Visualizar el árbol de decisión
+rpart.plot(arbol_condicion, type=2, extra=0, under = TRUE, fallen.leaves = TRUE, box.palette = "BuGn",
+           main = "Predicción del departamento", cex = 1)
+
+```
+
+```{r}
+# Caso de ejemplo para predicción
+vivienda_pred <- data.frame(
+  PCV1 = c(5), #vivienda improvisada
+  PCV2 = c(5), #Madera
+  PCV3 = c(2), #Lamina metalica
+  PCV5 = c(7), #tierra
+  PCV4 = c(1)  #ocupada
+)
+
+# Realizar predicción
+result_condicion <- predict(arbol_condicion, vivienda_pred, type = "class")
+result_condicion  # Mostrar el resultado de la predicción
+
+```
+
